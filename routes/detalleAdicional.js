@@ -3,21 +3,21 @@ var app = express();
 
 
 //======================================================================
-//Lista todos los Productos
+//Lista todos los detalleadicional
 //======================================================================
 app.get('/', (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM producto', (err, producto) => {
+        conn.query('SELECT * FROM detalleadicional', (err, detalle) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de producto',
+                    mensaje: 'Error al cargar lista de detalleadicional',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                producto: producto
+                detalle: detalle
             });
         });
     });
@@ -25,79 +25,73 @@ app.get('/', (req, res) => {
 
 
 //=======================================================================
-//Crear producto
+//Crear detalleadicional
 //=======================================================================
 app.post('/', (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        //bcrypt.hashSync(data.password, 10)
-        conn.query('INSERT INTO producto set ?', [data], (err, productoGuardado) => {
+        conn.query('INSERT INTO detalleadicional set ?', [data], (err, detalleGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear producto',
+                    mensaje: 'Error al crear detalleadicional',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                productos: productoGuardado
+                detalle: detalleGuardado
             });
         });
     });
 });
 
 //=======================================================================
-//Actualizar usuario
+//Actualizar detalleadicional
 //=======================================================================
 app.put('/:id', (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE producto set ? WHERE id = ?', [data, id], (err, productoActualizar) => {
+        conn.query('UPDATE detalleadicional set ? WHERE id = ?', [data, id], (err, detalleActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar producto',
+                    mensaje: 'Error al buscar detalle',
                     errors: err
-
                 });
             }
-
             res.status(200).json({
                 ok: true,
-                producto: productoActualizar
+                detalle: detalleActualizar
             });
         });
     });
 });
 
 //=======================================================================
-//Eliminar usuario por id
+//Eliminar detalleadicional por id
 //=======================================================================
 app.delete('/:id', (req, res) => {
-
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM producto WHERE id = ?', [id], (err, productoBorrar) => {
+        conn.query('DELETE FROM detalleadicional WHERE id = ?', [id], (err, detalleBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar producto',
+                    mensaje: 'Error al eliminar detalle',
                     errors: err
                 });
             }
 
             res.status(200).json({
                 ok: true,
-                usuario: productoBorrar
+                detalle: detalleBorrar
             });
         });
     });
-
-
 });
 
-//Exportacion de Ruta
 
+//Exportacion de Ruta
 module.exports = app;

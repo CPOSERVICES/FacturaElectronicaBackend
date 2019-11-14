@@ -3,21 +3,21 @@ var app = express();
 
 
 //======================================================================
-//Lista todos los Productos
+//Lista todos los factura
 //======================================================================
 app.get('/', (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM producto', (err, producto) => {
+        conn.query('SELECT * FROM factura', (err, factura) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de producto',
+                    mensaje: 'Error al cargar lista de factura',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                producto: producto
+                factura: factura
             });
         });
     });
@@ -25,79 +25,73 @@ app.get('/', (req, res) => {
 
 
 //=======================================================================
-//Crear producto
+//Crear factura
 //=======================================================================
 app.post('/', (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        //bcrypt.hashSync(data.password, 10)
-        conn.query('INSERT INTO producto set ?', [data], (err, productoGuardado) => {
+        conn.query('INSERT INTO factura set ?', [data], (err, facturaGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear producto',
+                    mensaje: 'Error al crear factura',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                productos: productoGuardado
+                factura: facturaGuardado
             });
         });
     });
 });
 
 //=======================================================================
-//Actualizar usuario
+//Actualizar factura
 //=======================================================================
 app.put('/:id', (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE producto set ? WHERE id = ?', [data, id], (err, productoActualizar) => {
+        conn.query('UPDATE factura set ? WHERE id = ?', [data, id], (err, facturaActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar producto',
+                    mensaje: 'Error al buscar factura',
                     errors: err
-
                 });
             }
-
             res.status(200).json({
                 ok: true,
-                producto: productoActualizar
+                factura: facturaActualizar
             });
         });
     });
 });
 
 //=======================================================================
-//Eliminar usuario por id
+//Eliminar factura por id
 //=======================================================================
 app.delete('/:id', (req, res) => {
-
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM producto WHERE id = ?', [id], (err, productoBorrar) => {
+        conn.query('DELETE FROM factura WHERE id = ?', [id], (err, facturaBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar producto',
+                    mensaje: 'Error al eliminar factura',
                     errors: err
                 });
             }
 
             res.status(200).json({
                 ok: true,
-                usuario: productoBorrar
+                factura: facturaBorrar
             });
         });
     });
-
-
 });
 
-//Exportacion de Ruta
 
+//Exportacion de Ruta
 module.exports = app;

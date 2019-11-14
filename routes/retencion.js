@@ -3,21 +3,21 @@ var app = express();
 
 
 //======================================================================
-//Lista todos los Productos
+//Lista todos los retencion
 //======================================================================
 app.get('/', (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM producto', (err, producto) => {
+        conn.query('SELECT * FROM retencion', (err, retencion) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de producto',
+                    mensaje: 'Error al cargar lista de retencion',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                producto: producto
+                retencion: retencion
             });
         });
     });
@@ -25,79 +25,73 @@ app.get('/', (req, res) => {
 
 
 //=======================================================================
-//Crear producto
+//Crear retencion
 //=======================================================================
 app.post('/', (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        //bcrypt.hashSync(data.password, 10)
-        conn.query('INSERT INTO producto set ?', [data], (err, productoGuardado) => {
+        conn.query('INSERT INTO retencion set ?', [data], (err, retencionGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear producto',
+                    mensaje: 'Error al crear retencion',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                productos: productoGuardado
+                retencion: retencionGuardado
             });
         });
     });
 });
 
 //=======================================================================
-//Actualizar usuario
+//Actualizar retencion
 //=======================================================================
 app.put('/:id', (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE producto set ? WHERE id = ?', [data, id], (err, productoActualizar) => {
+        conn.query('UPDATE retencion set ? WHERE id = ?', [data, id], (err, retencionActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar producto',
+                    mensaje: 'Error al buscar retencion',
                     errors: err
-
                 });
             }
-
             res.status(200).json({
                 ok: true,
-                producto: productoActualizar
+                retencion: retencionActualizar
             });
         });
     });
 });
 
 //=======================================================================
-//Eliminar usuario por id
+//Eliminar retencion por id
 //=======================================================================
 app.delete('/:id', (req, res) => {
-
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM producto WHERE id = ?', [id], (err, productoBorrar) => {
+        conn.query('DELETE FROM retencion WHERE id = ?', [id], (err, retencionBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar producto',
+                    mensaje: 'Error al eliminar retencion',
                     errors: err
                 });
             }
 
             res.status(200).json({
                 ok: true,
-                usuario: productoBorrar
+                retencion: retencionBorrar
             });
         });
     });
-
-
 });
 
-//Exportacion de Ruta
 
+//Exportacion de Ruta
 module.exports = app;

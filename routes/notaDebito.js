@@ -3,21 +3,21 @@ var app = express();
 
 
 //======================================================================
-//Lista todos los Productos
+//Lista todos los notadebito
 //======================================================================
 app.get('/', (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM producto', (err, producto) => {
+        conn.query('SELECT * FROM notadebito', (err, notadebito) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de producto',
+                    mensaje: 'Error al cargar lista de notadebito',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                producto: producto
+                notadebito: notadebito
             });
         });
     });
@@ -25,79 +25,73 @@ app.get('/', (req, res) => {
 
 
 //=======================================================================
-//Crear producto
+//Crear notadebito
 //=======================================================================
 app.post('/', (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        //bcrypt.hashSync(data.password, 10)
-        conn.query('INSERT INTO producto set ?', [data], (err, productoGuardado) => {
+        conn.query('INSERT INTO notadebito set ?', [data], (err, notadebitoGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear producto',
+                    mensaje: 'Error al crear notadebito',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                productos: productoGuardado
+                notadebito: notadebitoGuardado
             });
         });
     });
 });
 
 //=======================================================================
-//Actualizar usuario
+//Actualizar notadebito
 //=======================================================================
 app.put('/:id', (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE producto set ? WHERE id = ?', [data, id], (err, productoActualizar) => {
+        conn.query('UPDATE notadebito set ? WHERE id = ?', [data, id], (err, notadebitoActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar producto',
+                    mensaje: 'Error al buscar notadebito',
                     errors: err
-
                 });
             }
-
             res.status(200).json({
                 ok: true,
-                producto: productoActualizar
+                notadebito: notadebitoActualizar
             });
         });
     });
 });
 
 //=======================================================================
-//Eliminar usuario por id
+//Eliminar notadebito por id
 //=======================================================================
 app.delete('/:id', (req, res) => {
-
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM producto WHERE id = ?', [id], (err, productoBorrar) => {
+        conn.query('DELETE FROM notadebito WHERE id = ?', [id], (err, notadebitoBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar producto',
+                    mensaje: 'Error al eliminar notadebito',
                     errors: err
                 });
             }
 
             res.status(200).json({
                 ok: true,
-                usuario: productoBorrar
+                notadebito: notadebitoBorrar
             });
         });
     });
-
-
 });
 
-//Exportacion de Ruta
 
+//Exportacion de Ruta
 module.exports = app;

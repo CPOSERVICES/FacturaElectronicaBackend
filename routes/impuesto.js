@@ -3,21 +3,21 @@ var app = express();
 
 
 //======================================================================
-//Lista todos los Productos
+//Lista todos los impuesto
 //======================================================================
 app.get('/', (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM producto', (err, producto) => {
+        conn.query('SELECT * FROM impuesto', (err, impuesto) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de producto',
+                    mensaje: 'Error al cargar lista de impuesto',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                producto: producto
+                impuesto: impuesto
             });
         });
     });
@@ -25,36 +25,36 @@ app.get('/', (req, res) => {
 
 
 //=======================================================================
-//Crear producto
+//Crear impuesto
 //=======================================================================
 app.post('/', (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
         //bcrypt.hashSync(data.password, 10)
-        conn.query('INSERT INTO producto set ?', [data], (err, productoGuardado) => {
+        conn.query('INSERT INTO impuesto set ?', [data], (err, impuestoGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear producto',
+                    mensaje: 'Error al crear impuesto',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                productos: productoGuardado
+                impuesto: impuestoGuardado
             });
         });
     });
 });
 
 //=======================================================================
-//Actualizar usuario
+//Actualizar impuesto
 //=======================================================================
 app.put('/:id', (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE producto set ? WHERE id = ?', [data, id], (err, productoActualizar) => {
+        conn.query('UPDATE impuesto set ? WHERE id = ?', [data, id], (err, impuestoActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
@@ -66,31 +66,31 @@ app.put('/:id', (req, res) => {
 
             res.status(200).json({
                 ok: true,
-                producto: productoActualizar
+                impuesto: impuestoActualizar
             });
         });
     });
 });
 
 //=======================================================================
-//Eliminar usuario por id
+//Eliminar impuesto por id
 //=======================================================================
 app.delete('/:id', (req, res) => {
 
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM producto WHERE id = ?', [id], (err, productoBorrar) => {
+        conn.query('DELETE FROM impuesto WHERE id = ?', [id], (err, impuestoBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar producto',
+                    mensaje: 'Error al eliminar impuesto',
                     errors: err
                 });
             }
 
             res.status(200).json({
                 ok: true,
-                usuario: productoBorrar
+                impuesto: impuestoBorrar
             });
         });
     });

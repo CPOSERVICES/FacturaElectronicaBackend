@@ -7,7 +7,7 @@ var app = express();
 //======================================================================
 app.get('/', (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM producto', (err, producto) => {
+        conn.query('SELECT * FROM provincias', (err, producto) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
@@ -31,7 +31,7 @@ app.post('/', (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
         //bcrypt.hashSync(data.password, 10)
-        conn.query('INSERT INTO producto set ?', [data], (err, productoGuardado) => {
+        conn.query('INSERT INTO provincias set ?', [data], (err, productoGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
@@ -54,7 +54,7 @@ app.put('/:id', (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE producto set ? WHERE id = ?', [data, id], (err, productoActualizar) => {
+        conn.query('UPDATE provincias set ? WHERE id = ?', [data, id], (err, productoActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
@@ -71,7 +71,6 @@ app.put('/:id', (req, res) => {
         });
     });
 });
-
 //=======================================================================
 //Eliminar usuario por id
 //=======================================================================
@@ -79,7 +78,7 @@ app.delete('/:id', (req, res) => {
 
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM producto WHERE id = ?', [id], (err, productoBorrar) => {
+        conn.query('DELETE FROM provincias WHERE id = ?', [id], (err, productoBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
