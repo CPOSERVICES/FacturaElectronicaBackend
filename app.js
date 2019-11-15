@@ -63,9 +63,11 @@ var retencionRoutes = require('./routes/retencion');
 var guiaRoutes = require('./routes/guia');
 var detalleAdicionalRoutes = require('./routes/detalleAdicional');
 var impuestoirbpnrRoutes = require('./routes/impuestoIrbpnr');
+var uploadsRoutes = require('./routes/upload');
 
 
 //Rutas
+app.use('/upload', uploadsRoutes);
 app.use('/impuestoIrb', impuestoirbpnrRoutes);
 app.use('/detalle', detalleAdicionalRoutes);
 app.use('/guia', guiaRoutes);

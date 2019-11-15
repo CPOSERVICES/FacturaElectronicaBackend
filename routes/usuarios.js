@@ -1,6 +1,8 @@
 //importaciones de requires
 var express = require('express');
 var app = express();
+var mdAuth = require('../middlewares/auteticacion');
+
 
 
 //======================================================================
@@ -18,7 +20,8 @@ app.get('/', (req, res) => {
             }
             res.status(200).json({
                 ok: true,
-                usuarios: usuarios
+                usuarios: usuarios,
+                usuarioToken: req.usuarios
             });
         });
     });

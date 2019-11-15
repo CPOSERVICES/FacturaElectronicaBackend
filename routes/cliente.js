@@ -31,17 +31,24 @@ app.post('/', (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
         conn.query('INSERT INTO cliente set ?', [data], (err, clienteGuardado) => {
+
             if (err) {
                 return res.status(400).json({
                     ok: false,
                     mensaje: 'Error al crear cliente',
-                    errors: err
+                    errors: err,
+                    code: 400
+
                 });
             }
             res.status(201).json({
                 ok: true,
-                cliente: clienteGuardado
+                mensaje: 'Cliente correcto :)',
+                cliente: clienteGuardado,
+                code: 201
             });
+
+
         });
     });
 });
