@@ -1,64 +1,62 @@
-var express = require('express');
-var app = express();
+var proveedoresController = {}
 
 
 //======================================================================
-//Lista todos los Productos
+//Lista todos los proveedores
 //======================================================================
-app.get('/', (req, res) => {
+proveedoresController.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM ptoemision', (err, producto) => {
+        conn.query('SELECT * FROM proveedores', (err, proveedor) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de producto',
+                    mensaje: 'Error al cargar lista de proveedor',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                producto: producto
+                proveedor: proveedor
             });
         });
     });
-});
+};
 
 
 //=======================================================================
-//Crear producto
+//Crear proveedor
 //=======================================================================
-app.post('/', (req, res) => {
+proveedoresController.create = (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        //bcrypt.hashSync(data.password, 10)
-        conn.query('INSERT INTO ptoemision set ?', [data], (err, productoGuardado) => {
+        conn.query('INSERT INTO proveedores set ?', [data], (err, proveedorGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear producto',
+                    mensaje: 'Error al crear proveedor',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                productos: productoGuardado
+                proveedor: proveedorGuardado
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Actualizar usuario
+//Actualizar proveedores por id
 //=======================================================================
-app.put('/:id', (req, res) => {
+proveedoresController.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE ptoemision set ? WHERE id = ?', [data, id], (err, productoActualizar) => {
+        conn.query('UPDATE proveedores set ? WHERE id = ?', [data, id], (err, proveedoresActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar producto',
+                    mensaje: 'Error al buscar proveedores',
                     errors: err
 
                 });
@@ -66,38 +64,35 @@ app.put('/:id', (req, res) => {
 
             res.status(200).json({
                 ok: true,
-                producto: productoActualizar
+                proveedores: proveedoresActualizar
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Eliminar usuario por id
+//Eliminar proveedores por id
 //=======================================================================
-app.delete('/:id', (req, res) => {
-
+proveedoresController.delete = (req, res) => {
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM ptoemision WHERE id = ?', [id], (err, productoBorrar) => {
+        conn.query('DELETE FROM proveedores WHERE id = ?', [id], (err, proveedoresBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar producto',
+                    mensaje: 'Error al eliminar proveedores',
                     errors: err
                 });
             }
-
             res.status(200).json({
                 ok: true,
-                usuario: productoBorrar
+                proveedores: proveedoresBorrar
             });
         });
     });
 
 
-});
+};
 
 //Exportacion de Ruta
-
-module.exports = app;
+module.exports = proveedoresController;

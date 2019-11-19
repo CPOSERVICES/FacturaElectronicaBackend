@@ -1,102 +1,96 @@
-var express = require('express');
-var app = express();
+var campoAdicionalController = {}
 
 
 //======================================================================
-//Lista todos los Productos
+//Lista CampoAdicional
 //======================================================================
-app.get('/', (req, res) => {
+campoAdicionalController.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM impuestoiva', (err, producto) => {
+        conn.query('SELECT * FROM campoadicional', (err, campoadicional) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de producto',
+                    mensaje: 'Error al cargar lista de campoadicional',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                producto: producto
+                campoadicional: campoadicional
             });
         });
     });
-});
+};
 
 
 //=======================================================================
-//Crear producto
+//Crear Campo adional
 //=======================================================================
-app.post('/', (req, res) => {
+campoAdicionalController.create = (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        //bcrypt.hashSync(data.password, 10)
-        conn.query('INSERT INTO impuestoiva set ?', [data], (err, productoGuardado) => {
+        conn.query('INSERT INTO campoadicional set ?', [data], (err, campoadicionalGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear producto',
+                    mensaje: 'Error al crear campoadicional',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                productos: productoGuardado
+                campoadicional: campoadicionalGuardado
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Actualizar usuario
+//Actualizar campoadicional
 //=======================================================================
-app.put('/:id', (req, res) => {
+campoAdicionalController.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE impuestoiva set ? WHERE id = ?', [data, id], (err, productoActualizar) => {
+        conn.query('UPDATE campoadicional set ? WHERE id = ?', [data, id], (err, campoadicionalActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar producto',
+                    mensaje: 'Error al buscar campoadicional',
                     errors: err
-
                 });
             }
-
             res.status(200).json({
                 ok: true,
-                producto: productoActualizar
+                campoadicional: campoadicionalActualizar
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Eliminar usuario por id
+//Eliminar campoadicional por id
 //=======================================================================
-app.delete('/:id', (req, res) => {
-
+campoAdicionalController.delete = (req, res) => {
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM impuestoiva WHERE id = ?', [id], (err, productoBorrar) => {
+        conn.query('DELETE FROM campoadicional WHERE id = ?', [id], (err, campoadicionalBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar producto',
+                    mensaje: 'Error al eliminar campoadicional',
                     errors: err
                 });
             }
 
             res.status(200).json({
                 ok: true,
-                usuario: productoBorrar
+                campoadicional: campoadicionalBorrar
             });
         });
     });
+};
 
-
-});
 
 //Exportacion de Ruta
-module.exports = app;
+module.exports = campoAdicionalController;

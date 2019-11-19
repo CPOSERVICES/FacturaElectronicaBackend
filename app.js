@@ -11,7 +11,6 @@ var cors = require('cors');
 //Inicializar variables
 var app = express();
 
-
 //Cords
 app.use(cors());
 
@@ -41,55 +40,49 @@ app.use(bodyParser.json())
 //Impotacion de Rutas
 var appRoutes = require('./routes/app');
 var loginRoutes = require('./routes/login');
-var usuariosRoutes = require('./routes/usuarios');
-var productosRoutes = require('./routes/producto');
-var proveedoresRoutes = require('./routes/proveedor');
-var clientesRoutes = require('./routes/cliente');
-var ivaRoutes = require('./routes/impuestoIva');
-var iceRoutes = require('./routes/impuestoIce');
-var puntoEmision = require('./routes/puntoEmision');
-var emisorRoutes = require('./routes/emisor');
-var establecimientoRoutes = require('./routes/establecimiento');
-var motivoRoutes = require('./routes/motivo');
-var mensajeRoutes = require('./routes/mensaje');
-var roleRoutes = require('./routes/role');
-var impuestoRoutes = require('./routes/impuesto');
-var provinciasRoutes = require('./routes/provincias');
-var campoadicionalRoutes = require('./routes/campoAdicional');
-var facturaRoutes = require('./routes/factura');
-var notasCreditoRoutes = require('./routes/notaCredito');
-var notasDebitoRoutes = require('./routes/notaDebito');
-var retencionRoutes = require('./routes/retencion');
-var guiaRoutes = require('./routes/guia');
-var detalleAdicionalRoutes = require('./routes/detalleAdicional');
-var impuestoirbpnrRoutes = require('./routes/impuestoIrbpnr');
 var uploadsRoutes = require('./routes/upload');
 
 
 //Rutas
+//Controllers
+app.get('/campo', appRoutes);
+app.get('/cuidades', appRoutes);
+app.get('/cliente', appRoutes);
+app.get('/compras', appRoutes);
+app.get('/comprasProductos', appRoutes);
+app.get('/cotizaciones', appRoutes);
+app.get('/cotizacionesProductos', appRoutes);
+app.get('/detalle', appRoutes);
+app.get('/emisor', appRoutes);
+app.get('/establecimiento', appRoutes);
+app.get('/factura', appRoutes);
+app.get('/facturaCompras', appRoutes);
+app.get('/facturaProducto', appRoutes);
+app.get('/facturahasproductocompras', appRoutes);
+app.get('/facturasCobros', appRoutes);
+app.get('/facturascompraspagos', appRoutes);
+app.get('/guia', appRoutes);
+app.get('/guiaProducto', appRoutes);
+app.get('/impuesto', appRoutes);
+app.get('/impuestoComprobanteRetencion', appRoutes);
+app.get('/ice', appRoutes);
+app.get('/impuestoIrb', appRoutes);
+app.get('/iva', appRoutes);
+app.get('/mensaje', appRoutes);
+app.get('/motivo', appRoutes);
+app.get('/notasC', appRoutes);
+app.get('/notaCreditoProducto', appRoutes);
+app.get('/notasD', appRoutes);
+app.get('/producto', appRoutes);
+app.get('/proveedor', appRoutes);
+app.get('/provincias', appRoutes);
+app.get('/puntoEmision', appRoutes);
+app.get('/retencion', appRoutes);
+app.get('/role', appRoutes);
+app.get('/usuarios', appRoutes);
+app.get('/sriRetenciones', appRoutes);
+
 app.use('/upload', uploadsRoutes);
-app.use('/impuestoIrb', impuestoirbpnrRoutes);
-app.use('/detalle', detalleAdicionalRoutes);
-app.use('/guia', guiaRoutes);
-app.use('/retencion', retencionRoutes);
-app.use('/notasD', notasDebitoRoutes);
-app.use('/notasC', notasCreditoRoutes);
-app.use('/factura', facturaRoutes);
-app.use('/campo', campoadicionalRoutes);
-app.use('/provincia', provinciasRoutes);
-app.use('/impuesto', impuestoRoutes);
-app.use('/role', roleRoutes)
-app.use('/mensaje', mensajeRoutes);
-app.use('/motivo', motivoRoutes);
-app.use('/establecimiento', establecimientoRoutes);
-app.use('/emisor', emisorRoutes);
-app.use('/puntoEmision', puntoEmision);
-app.use('/ice', iceRoutes);
-app.use('/iva', ivaRoutes);
-app.use('/cliente', clientesRoutes);
-app.use('/proveedor', proveedoresRoutes);
-app.use('/producto', productosRoutes);
-app.use('/usuario', usuariosRoutes)
 app.use('/login', loginRoutes);
 app.use('/', appRoutes);
 

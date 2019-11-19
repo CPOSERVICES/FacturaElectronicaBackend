@@ -1,97 +1,96 @@
-var express = require('express');
-var app = express();
+var notasCreditoController = {}
 
 
 //======================================================================
-//Lista todos los factura
+//Lista todos los notacredito
 //======================================================================
-app.get('/', (req, res) => {
+notasCreditoController.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM factura', (err, factura) => {
+        conn.query('SELECT * FROM notacredito', (err, notacredito) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de factura',
+                    mensaje: 'Error al cargar lista de notacredito',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                factura: factura
+                notacredito: notacredito
             });
         });
     });
-});
+};
 
 
 //=======================================================================
-//Crear factura
+//Crear notacredito
 //=======================================================================
-app.post('/', (req, res) => {
+notasCreditoController.create = (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('INSERT INTO factura set ?', [data], (err, facturaGuardado) => {
+        conn.query('INSERT INTO notacredito set ?', [data], (err, notacreditoGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear factura',
+                    mensaje: 'Error al crear notacredito',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                factura: facturaGuardado
+                notacredito: notacreditoGuardado
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Actualizar factura
+//Actualizar notacredito
 //=======================================================================
-app.put('/:id', (req, res) => {
+notasCreditoController.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE factura set ? WHERE id = ?', [data, id], (err, facturaActualizar) => {
+        conn.query('UPDATE notacredito set ? WHERE id = ?', [data, id], (err, notacreditoActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar factura',
+                    mensaje: 'Error al buscar notacredito',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                factura: facturaActualizar
+                notacredito: notacreditoActualizar
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Eliminar factura por id
+//Eliminar notacredito por id
 //=======================================================================
-app.delete('/:id', (req, res) => {
+notasCreditoController.delete = (req, res) => {
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM factura WHERE id = ?', [id], (err, facturaBorrar) => {
+        conn.query('DELETE FROM notacredito WHERE id = ?', [id], (err, notacreditoBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar factura',
+                    mensaje: 'Error al eliminar notacredito',
                     errors: err
                 });
             }
 
             res.status(200).json({
                 ok: true,
-                factura: facturaBorrar
+                facnotacreditotura: notacreditoBorrar
             });
         });
     });
-});
+};
 
 
 //Exportacion de Ruta
-module.exports = app;
+module.exports = notasCreditoController;

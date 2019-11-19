@@ -1,97 +1,96 @@
-var express = require('express');
-var app = express();
-
+//importaciones de requires
+var usuarioController = {}
+    //var mdAuth = require('../middlewares/auteticacion');
 
 //======================================================================
-//Lista todos los notadebito
+//Lista todos los usuarios
 //======================================================================
-app.get('/', (req, res) => {
+usuarioController.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM notadebito', (err, notadebito) => {
+        conn.query('SELECT * FROM user', (err, usuarios) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de notadebito',
+                    mensaje: 'Error al cargar lista de usuarios',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                notadebito: notadebito
+                usuarios: usuarios,
+                usuarioToken: req.usuarios
             });
         });
     });
-});
-
+};
 
 //=======================================================================
-//Crear notadebito
+//Crear usuario
 //=======================================================================
-app.post('/', (req, res) => {
+usuarioController.create = (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('INSERT INTO notadebito set ?', [data], (err, notadebitoGuardado) => {
+        //bcrypt.hashSync(data.password, 10)
+        conn.query('INSERT INTO user set ?', [data], (err, usuarioGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear notadebito',
+                    mensaje: 'Error al crear usuario',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                notadebito: notadebitoGuardado
+                usuarios: usuarioGuardado
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Actualizar notadebito
+//Actualizar usuario por id
 //=======================================================================
-app.put('/:id', (req, res) => {
+usuarioController.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE notadebito set ? WHERE id = ?', [data, id], (err, notadebitoActualizar) => {
+        conn.query('UPDATE user set ? WHERE id = ?', [data, id], (err, usuarioActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar notadebito',
+                    mensaje: 'Error al buscar usuario',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                notadebito: notadebitoActualizar
+                usuario: usuarioActualizar
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Eliminar notadebito por id
+//Eliminar usuario por id
 //=======================================================================
-app.delete('/:id', (req, res) => {
+usuarioController.delete = (req, res) => {
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM notadebito WHERE id = ?', [id], (err, notadebitoBorrar) => {
+        conn.query('DELETE FROM user WHERE id = ?', [id], (err, usuarioBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar notadebito',
+                    mensaje: 'Error al eliminar usuario',
                     errors: err
                 });
             }
-
             res.status(200).json({
                 ok: true,
-                notadebito: notadebitoBorrar
+                usuario: usuarioBorrar
             });
         });
     });
-});
-
+};
 
 //Exportacion de Ruta
-module.exports = app;
+module.exports = usuarioController;

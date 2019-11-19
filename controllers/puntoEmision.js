@@ -1,97 +1,92 @@
-var express = require('express');
-var app = express();
-
+var puntoEmisionController = {}
 
 //======================================================================
-//Lista todos los detalleadicional
+//Lista todos los ptoemision
 //======================================================================
-app.get('/', (req, res) => {
+puntoEmisionController.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM detalleadicional', (err, detalle) => {
+        conn.query('SELECT * FROM ptoemision', (err, ptoemision) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de detalleadicional',
+                    mensaje: 'Error al cargar lista de ptoemision',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                detalle: detalle
+                ptoemision: ptoemision
             });
         });
     });
-});
-
+};
 
 //=======================================================================
-//Crear detalleadicional
+//Crear ptoemision
 //=======================================================================
-app.post('/', (req, res) => {
+puntoEmisionController.create = (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('INSERT INTO detalleadicional set ?', [data], (err, detalleGuardado) => {
+        conn.query('INSERT INTO ptoemision set ?', [data], (err, ptoemisionGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear detalleadicional',
+                    mensaje: 'Error al crear ptoemision',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                detalle: detalleGuardado
+                ptoemision: ptoemisionGuardado
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Actualizar detalleadicional
+//Actualizar ptoemision por id
 //=======================================================================
-app.put('/:id', (req, res) => {
+puntoEmisionController.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE detalleadicional set ? WHERE id = ?', [data, id], (err, detalleActualizar) => {
+        conn.query('UPDATE ptoemision set ? WHERE id = ?', [data, id], (err, ptoemisionActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar detalle',
+                    mensaje: 'Error al buscar ptoemision',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                detalle: detalleActualizar
+                ptoemision: ptoemisionActualizar
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Eliminar detalleadicional por id
+//Eliminar ptoemision por id
 //=======================================================================
-app.delete('/:id', (req, res) => {
+puntoEmisionController.delete = (req, res) => {
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM detalleadicional WHERE id = ?', [id], (err, detalleBorrar) => {
+        conn.query('DELETE FROM ptoemision WHERE id = ?', [id], (err, ptoemisionBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar detalle',
+                    mensaje: 'Error al eliminar ptoemision',
                     errors: err
                 });
             }
-
             res.status(200).json({
                 ok: true,
-                detalle: detalleBorrar
+                ptoemision: ptoemisionBorrar
             });
         });
     });
-});
-
+};
 
 //Exportacion de Ruta
-module.exports = app;
+module.exports = puntoEmisionController;

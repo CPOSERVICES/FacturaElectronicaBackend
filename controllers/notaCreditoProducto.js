@@ -1,36 +1,34 @@
-var express = require('express');
-var app = express();
+var notaCreditoProductoController = {}
 
-
-//======================================================================
-//Lista todos los Clientes
-//======================================================================
-app.get('/', (req, res) => {
+//=======================================================================
+//Obtiene todos los notacreditohasproducto 
+//=======================================================================
+notaCreditoProductoController.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM cliente', (err, clientes) => {
+        conn.query('SELECT * FROM notacreditohasproducto', (err, nCreditoProducto) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de cliente',
+                    mensaje: 'Error al cargar lista de NotasCreditoProducto',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                clientes: clientes
+                nCreditoProducto: nCreditoProducto
             });
         });
     });
-});
+};
 
 
 //=======================================================================
-//Crear producto
+//Crear NotaCreditoProducto
 //=======================================================================
-app.post('/', (req, res) => {
+notaCreditoProductoController.create = (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('INSERT INTO cliente set ?', [data], (err, clienteGuardado) => {
+        conn.query('INSERT INTO notacreditohasproducto set ?', [data], (err, nCreditoProductoGuardado) => {
 
             if (err) {
                 return res.status(400).json({
@@ -44,61 +42,62 @@ app.post('/', (req, res) => {
             res.status(201).json({
                 ok: true,
                 mensaje: 'Cliente correcto :)',
-                cliente: clienteGuardado,
+                nCreditoProducto: nCreditoProductoGuardado,
                 code: 201
             });
-
-
         });
     });
-});
+};
 
 //=======================================================================
-//Actualizar Cliente
+//Actualizacion NotaCreditoProducto por id 
 //=======================================================================
-app.put('/:id', (req, res) => {
+notaCreditoProductoController.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE cliente set ? WHERE id = ?', [data, id], (err, clienteActualizar) => {
+        conn.query('UPDATE notacreditohasproducto set ? WHERE id = ?', [data, id], (err, nCreditoProductoActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar cliente',
+                    mensaje: 'error al actualizar',
                     errors: err
+
                 });
             }
+
             res.status(200).json({
                 ok: true,
-                cliente: clienteActualizar
+                nCreditoProducto: nCreditoProductoActualizar
             });
         });
     });
-});
+}
 
 //=======================================================================
-//Eliminar Cliente por id
+//Eliminacion NotaCreditoProducto por id 
 //=======================================================================
-app.delete('/:id', (req, res) => {
+notaCreditoProductoController.delete = (req, res) => {
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM cliente WHERE id = ?', [id], (err, clienteBorrar) => {
+        conn.query('DELETE FROM notacreditohasproducto WHERE id = ?', [id], (err, nCreditoProductoBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar cliente',
+                    mensaje: 'Error al buscar el id',
                     errors: err
                 });
             }
 
             res.status(200).json({
                 ok: true,
-                cliente: clienteBorrar
+                nCreditoProducto: nCreditoProductoBorrar
             });
         });
     });
-});
+}
 
-
-//Exportacion de Ruta
-module.exports = app;
+//=======================================================================
+//Exporta el modulo 
+//=======================================================================
+module.exports = notaCreditoProductoController;

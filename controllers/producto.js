@@ -1,97 +1,95 @@
-var express = require('express');
-var app = express();
+var productosController = {}
 
 
 //======================================================================
-//Lista todos los impuestoirbpnr
+//Lista todos los Productos
 //======================================================================
-app.get('/', (req, res) => {
+productosController.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM impuestoirbpnr', (err, impuestoirbpnr) => {
+        conn.query('SELECT * FROM producto', (err, producto) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de impuestoirbpnr',
+                    mensaje: 'Error al cargar lista de producto',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                impuestoirbpnr: impuestoirbpnr
+                producto: producto
             });
         });
     });
-});
+};
 
 
 //=======================================================================
-//Crear impuestoirbpnr
+//Crear producto
 //=======================================================================
-app.post('/', (req, res) => {
+productosController.create = (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('INSERT INTO impuestoirbpnr set ?', [data], (err, impuestoirbpnrGuardado) => {
+        //bcrypt.hashSync(data.password, 10)
+        conn.query('INSERT INTO producto set ?', [data], (err, productoGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear impuestoirbpnr',
+                    mensaje: 'Error al crear producto',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                impuestoirbpnr: impuestoirbpnrGuardado
+                productos: productoGuardado
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Actualizar impuestoirbpnr
+//Actualizar producto por id
 //=======================================================================
-app.put('/:id', (req, res) => {
+productosController.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE impuestoirbpnr set ? WHERE id = ?', [data, id], (err, impuestoirbpnrActualizar) => {
+        conn.query('UPDATE producto set ? WHERE id = ?', [data, id], (err, productoActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar impuestoirbpnr',
+                    mensaje: 'Error al buscar producto',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                impuestoirbpnr: impuestoirbpnrActualizar
+                producto: productoActualizar
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Eliminar impuestoirbpnr por id
+//Eliminar producto por id
 //=======================================================================
-app.delete('/:id', (req, res) => {
+productosController.delete = (req, res) => {
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM impuestoirbpnr WHERE id = ?', [id], (err, impuestoirbpnrBorrar) => {
+        conn.query('DELETE FROM producto WHERE id = ?', [id], (err, productoBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar impuestoirbpnr',
+                    mensaje: 'Error al eliminar producto',
                     errors: err
                 });
             }
-
             res.status(200).json({
                 ok: true,
-                impuestoirbpnr: impuestoirbpnrBorrar
+                usuario: productoBorrar
             });
         });
     });
-});
-
+};
 
 //Exportacion de Ruta
-module.exports = app;
+module.exports = productosController;

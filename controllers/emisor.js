@@ -1,64 +1,62 @@
-var express = require('express');
-var app = express();
+var emisorController = {}
 
 
 //======================================================================
-//Lista todos los Productos
+//Lista todos los Emisores
 //======================================================================
-app.get('/', (req, res) => {
+emisorController.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM role', (err, producto) => {
+        conn.query('SELECT * FROM emisor', (err, emisor) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de producto',
+                    mensaje: 'Error al cargar lista de emisor',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                producto: producto
+                emisor: emisor
             });
         });
     });
-});
+};
 
 
 //=======================================================================
-//Crear producto
+//Crear Emisor
 //=======================================================================
-app.post('/', (req, res) => {
+emisorController.create = (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        //bcrypt.hashSync(data.password, 10)
-        conn.query('INSERT INTO role set ?', [data], (err, productoGuardado) => {
+        conn.query('INSERT INTO emisor set ?', [data], (err, emisorGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear producto',
+                    mensaje: 'Error al crear emisor',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                productos: productoGuardado
+                emisor: emisorGuardado
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Actualizar usuario
+//Actualizar Emisor
 //=======================================================================
-app.put('/:id', (req, res) => {
+emisorController.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE role set ? WHERE id = ?', [data, id], (err, productoActualizar) => {
+        conn.query('UPDATE emisor set ? WHERE id = ?', [data, id], (err, emisorActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar producto',
+                    mensaje: 'Error al buscar Emisor',
                     errors: err
 
                 });
@@ -66,38 +64,38 @@ app.put('/:id', (req, res) => {
 
             res.status(200).json({
                 ok: true,
-                producto: productoActualizar
+                emisor: emisorActualizar
             });
         });
     });
-});
+};
 
 //=======================================================================
 //Eliminar usuario por id
 //=======================================================================
-app.delete('/:id', (req, res) => {
+emisorController.delete = (req, res) => {
 
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM role WHERE id = ?', [id], (err, productoBorrar) => {
+        conn.query('DELETE FROM emisor WHERE id = ?', [id], (err, emisorBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar producto',
+                    mensaje: 'Error al eliminar emisor',
                     errors: err
                 });
             }
 
             res.status(200).json({
                 ok: true,
-                usuario: productoBorrar
+                emisor: emisorBorrar
             });
         });
     });
 
 
-});
+};
 
 //Exportacion de Ruta
 
-module.exports = app;
+module.exports = emisorController;

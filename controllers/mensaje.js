@@ -1,68 +1,63 @@
-//importaciones de requires
-var express = require('express');
-var app = express();
-var mdAuth = require('../middlewares/auteticacion');
-
+var mensajeController = {}
 
 
 //======================================================================
-//Lista todos los usuarios
+//Lista todos los Mensaje
 //======================================================================
-app.get('/', (req, res) => {
+mensajeController.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM user', (err, usuarios) => {
+        conn.query('SELECT * FROM mensaje', (err, mensaje) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de usuarios',
+                    mensaje: 'Error al cargar lista de mensaje',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                usuarios: usuarios,
-                usuarioToken: req.usuarios
+                mensaje: mensaje
             });
         });
     });
-});
+};
 
 
 //=======================================================================
-//Crear usuario
+//Crear Mensaje
 //=======================================================================
-app.post('/', (req, res) => {
+mensajeController.create = (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
         //bcrypt.hashSync(data.password, 10)
-        conn.query('INSERT INTO user set ?', [data], (err, usuarioGuardado) => {
+        conn.query('INSERT INTO mensaje set ?', [data], (err, mensajeGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear usuario',
+                    mensaje: 'Error al crear mensaje',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                usuarios: usuarioGuardado
+                mensaje: mensajeGuardado
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Actualizar usuario
+//Actualizar Mensaje por id
 //=======================================================================
-app.put('/:id', (req, res) => {
+mensajeController.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE user set ? WHERE id = ?', [data, id], (err, usuarioActualizar) => {
+        conn.query('UPDATE mensaje set ? WHERE id = ?', [data, id], (err, mensajeActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar usuario',
+                    mensaje: 'Error al buscar mensaje',
                     errors: err
 
                 });
@@ -70,37 +65,33 @@ app.put('/:id', (req, res) => {
 
             res.status(200).json({
                 ok: true,
-                usuario: usuarioActualizar
+                mensaje: mensajeActualizar
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Eliminar usuario por id
+//Eliminar Mensaje por id
 //=======================================================================
-app.delete('/:id', (req, res) => {
-
+mensajeController.delete = (req, res) => {
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM user WHERE id = ?', [id], (err, usuarioBorrar) => {
+        conn.query('DELETE FROM mensaje WHERE id = ?', [id], (err, mensajeBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar usuario',
+                    mensaje: 'Error al eliminar mensaje',
                     errors: err
                 });
             }
-
             res.status(200).json({
                 ok: true,
-                usuario: usuarioBorrar
+                mensaje: mensajeBorrar
             });
         });
     });
-
-
-});
+};
 
 //Exportacion de Ruta
-module.exports = app;
+module.exports = mensajeController;

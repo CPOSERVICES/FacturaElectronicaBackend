@@ -1,103 +1,96 @@
-var express = require('express');
-var app = express();
+var guiaController = {}
 
 
 //======================================================================
-//Lista todos los Productos
+//Lista todos los guia
 //======================================================================
-app.get('/', (req, res) => {
+guiaController.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM mensaje', (err, producto) => {
+        conn.query('SELECT * FROM guia', (err, guia) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de producto',
+                    mensaje: 'Error al cargar lista de guia',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                producto: producto
+                guia: guia
             });
         });
     });
-});
+};
 
 
 //=======================================================================
-//Crear producto
+//Crear guia
 //=======================================================================
-app.post('/', (req, res) => {
+guiaController.create = (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        //bcrypt.hashSync(data.password, 10)
-        conn.query('INSERT INTO mensaje set ?', [data], (err, productoGuardado) => {
+        conn.query('INSERT INTO guia set ?', [data], (err, guiaGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear producto',
+                    mensaje: 'Error al crear guia',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                productos: productoGuardado
+                guia: guiaGuardado
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Actualizar usuario
+//Actualizar guia
 //=======================================================================
-app.put('/:id', (req, res) => {
+guiaController.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE mensaje set ? WHERE id = ?', [data, id], (err, productoActualizar) => {
+        conn.query('UPDATE guia set ? WHERE id = ?', [data, id], (err, guiaActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar producto',
+                    mensaje: 'Error al buscar guia',
                     errors: err
-
                 });
             }
-
             res.status(200).json({
                 ok: true,
-                producto: productoActualizar
+                guia: guiaActualizar
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Eliminar usuario por id
+//Eliminar guia por id
 //=======================================================================
-app.delete('/:id', (req, res) => {
-
+guiaController.delete = (req, res) => {
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM mensaje WHERE id = ?', [id], (err, productoBorrar) => {
+        conn.query('DELETE FROM guia WHERE id = ?', [id], (err, guiaBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar producto',
+                    mensaje: 'Error al eliminar guia',
                     errors: err
                 });
             }
 
             res.status(200).json({
                 ok: true,
-                usuario: productoBorrar
+                guia: guiaBorrar
             });
         });
     });
+};
 
-
-});
 
 //Exportacion de Ruta
-
-module.exports = app;
+module.exports = guiaController;

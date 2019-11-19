@@ -1,97 +1,92 @@
-var express = require('express');
-var app = express();
-
+var roleController = {}
 
 //======================================================================
-//Lista todos los guia
+//Lista todos los role
 //======================================================================
-app.get('/', (req, res) => {
+roleController.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM guia', (err, guia) => {
+        conn.query('SELECT * FROM role', (err, role) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de guia',
+                    mensaje: 'Error al cargar lista de roles',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                guia: guia
+                role: role
             });
         });
     });
-});
-
+};
 
 //=======================================================================
-//Crear guia
+//Crear role
 //=======================================================================
-app.post('/', (req, res) => {
+roleController.create = (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('INSERT INTO guia set ?', [data], (err, guiaGuardado) => {
+        conn.query('INSERT INTO role set ?', [data], (err, roleGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear guia',
+                    mensaje: 'Error al crear role',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                guia: guiaGuardado
+                role: roleGuardado
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Actualizar guia
+//Actualizar role por id
 //=======================================================================
-app.put('/:id', (req, res) => {
+roleController.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE guia set ? WHERE id = ?', [data, id], (err, guiaActualizar) => {
+        conn.query('UPDATE role set ? WHERE id = ?', [data, id], (err, roleActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar guia',
+                    mensaje: 'Error al buscar role',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                guia: guiaActualizar
+                role: roleActualizar
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Eliminar guia por id
+//Eliminar role por id
 //=======================================================================
-app.delete('/:id', (req, res) => {
+roleController.delete = (req, res) => {
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM guia WHERE id = ?', [id], (err, guiaBorrar) => {
+        conn.query('DELETE FROM role WHERE id = ?', [id], (err, roleBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar guia',
+                    mensaje: 'Error al eliminar role',
                     errors: err
                 });
             }
-
             res.status(200).json({
                 ok: true,
-                guia: guiaBorrar
+                role: roleBorrar
             });
         });
     });
-});
-
+};
 
 //Exportacion de Ruta
-module.exports = app;
+module.exports = roleController;

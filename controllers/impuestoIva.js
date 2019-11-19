@@ -1,103 +1,96 @@
-var express = require('express');
-var app = express();
+var impuestoIvaController = {}
 
 
 //======================================================================
-//Lista todos los Productos
+//Lista todos los impuestoIva
 //======================================================================
-app.get('/', (req, res) => {
+impuestoIvaController.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM emisor', (err, producto) => {
+        conn.query('SELECT * FROM impuestoiva', (err, impuestoIva) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de producto',
+                    mensaje: 'Error al cargar lista de impuestoIva',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                producto: producto
+                impuestoIva: impuestoIva
             });
         });
     });
-});
+};
 
 
 //=======================================================================
-//Crear producto
+//Crear impuestoIva
 //=======================================================================
-app.post('/', (req, res) => {
+impuestoIvaController.create = (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        //bcrypt.hashSync(data.password, 10)
-        conn.query('INSERT INTO emisor set ?', [data], (err, productoGuardado) => {
+        conn.query('INSERT INTO impuestoiva set ?', [data], (err, impuestoIvaGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear producto',
+                    mensaje: 'Error al crear impuestoIva',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                productos: productoGuardado
+                impuestoIva: impuestoIvaGuardado
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Actualizar usuario
+//Actualizar impuestoIva
 //=======================================================================
-app.put('/:id', (req, res) => {
+impuestoIvaController.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE emisor set ? WHERE id = ?', [data, id], (err, productoActualizar) => {
+        conn.query('UPDATE impuestoiva set ? WHERE id = ?', [data, id], (err, impuestoIvaActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar producto',
+                    mensaje: 'Error al buscar impuestoIva',
                     errors: err
 
                 });
             }
-
             res.status(200).json({
                 ok: true,
-                producto: productoActualizar
+                impuestoIva: impuestoIvaActualizar
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Eliminar usuario por id
+//Eliminar impuestoIva por id
 //=======================================================================
-app.delete('/:id', (req, res) => {
+impuestoIvaController.delete = (req, res) => {
 
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM emisor WHERE id = ?', [id], (err, productoBorrar) => {
+        conn.query('DELETE FROM impuestoiva WHERE id = ?', [id], (err, impuestoIvaBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar producto',
+                    mensaje: 'Error al eliminar impuestoIva',
                     errors: err
                 });
             }
-
             res.status(200).json({
                 ok: true,
-                usuario: productoBorrar
+                impuestoIva: impuestoIvaBorrar
             });
         });
     });
-
-
-});
+};
 
 //Exportacion de Ruta
-
-module.exports = app;
+module.exports = impuestoIvaController;

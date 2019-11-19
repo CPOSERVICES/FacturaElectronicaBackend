@@ -1,103 +1,103 @@
-var express = require('express');
-var app = express();
+var clienteController = {}
 
 
 //======================================================================
-//Lista todos los Productos
+//Lista todos los Clientes
 //======================================================================
-app.get('/', (req, res) => {
+clienteController.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM motivo', (err, producto) => {
+        conn.query('SELECT * FROM cliente', (err, clientes) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de producto',
+                    mensaje: 'Error al cargar lista de cliente',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                producto: producto
+                clientes: clientes
             });
         });
     });
-});
+};
 
 
 //=======================================================================
-//Crear producto
+//Crear Cliente
 //=======================================================================
-app.post('/', (req, res) => {
+clienteController.create = (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        //bcrypt.hashSync(data.password, 10)
-        conn.query('INSERT INTO motivo set ?', [data], (err, productoGuardado) => {
+        conn.query('INSERT INTO cliente set ?', [data], (err, clienteGuardado) => {
+
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear producto',
-                    errors: err
+                    mensaje: 'Error al crear cliente',
+                    errors: err,
+                    code: 400
+
                 });
             }
             res.status(201).json({
                 ok: true,
-                productos: productoGuardado
+                mensaje: 'Cliente correcto :)',
+                cliente: clienteGuardado,
+                code: 201
             });
+
+
         });
     });
-});
+};
 
 //=======================================================================
-//Actualizar usuario
+//Actualizar Cliente por id
 //=======================================================================
-app.put('/:id', (req, res) => {
+clienteController.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE motivo set ? WHERE id = ?', [data, id], (err, productoActualizar) => {
+        conn.query('UPDATE cliente set ? WHERE id = ?', [data, id], (err, clienteActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar producto',
+                    mensaje: 'Error al buscar cliente',
                     errors: err
-
                 });
             }
-
             res.status(200).json({
                 ok: true,
-                producto: productoActualizar
+                cliente: clienteActualizar
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Eliminar usuario por id
+//Eliminar Cliente por id
 //=======================================================================
-app.delete('/:id', (req, res) => {
-
+clienteController.delete = (req, res) => {
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM motivo WHERE id = ?', [id], (err, productoBorrar) => {
+        conn.query('DELETE FROM cliente WHERE id = ?', [id], (err, clienteBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar producto',
+                    mensaje: 'Error al eliminar cliente',
                     errors: err
                 });
             }
 
             res.status(200).json({
                 ok: true,
-                usuario: productoBorrar
+                cliente: clienteBorrar
             });
         });
     });
+};
 
-
-});
 
 //Exportacion de Ruta
-
-module.exports = app;
+module.exports = clienteController;

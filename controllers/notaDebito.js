@@ -1,97 +1,96 @@
-var express = require('express');
-var app = express();
+var notasDebitoController = {}
 
 
 //======================================================================
-//Lista todos los notacredito
+//Lista todos los notadebito
 //======================================================================
-app.get('/', (req, res) => {
+notasDebitoController.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM notacredito', (err, notacredito) => {
+        conn.query('SELECT * FROM notadebito', (err, notadebito) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de notacredito',
+                    mensaje: 'Error al cargar lista de notadebito',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                notacredito: notacredito
+                notadebito: notadebito
             });
         });
     });
-});
+};
 
 
 //=======================================================================
-//Crear notacredito
+//Crear notadebito
 //=======================================================================
-app.post('/', (req, res) => {
+notasDebitoController.create = (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('INSERT INTO notacredito set ?', [data], (err, notacreditoGuardado) => {
+        conn.query('INSERT INTO notadebito set ?', [data], (err, notadebitoGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear notacredito',
+                    mensaje: 'Error al crear notadebito',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                notacredito: notacreditoGuardado
+                notadebito: notadebitoGuardado
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Actualizar notacredito
+//Actualizar notadebito
 //=======================================================================
-app.put('/:id', (req, res) => {
+notasDebitoController.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE notacredito set ? WHERE id = ?', [data, id], (err, notacreditoActualizar) => {
+        conn.query('UPDATE notadebito set ? WHERE id = ?', [data, id], (err, notadebitoActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar notacredito',
+                    mensaje: 'Error al buscar notadebito',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                notacredito: notacreditoActualizar
+                notadebito: notadebitoActualizar
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Eliminar notacredito por id
+//Eliminar notadebito por id
 //=======================================================================
-app.delete('/:id', (req, res) => {
+notasDebitoController.delete = (req, res) => {
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM notacredito WHERE id = ?', [id], (err, notacreditoBorrar) => {
+        conn.query('DELETE FROM notadebito WHERE id = ?', [id], (err, notadebitoBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar notacredito',
+                    mensaje: 'Error al eliminar notadebito',
                     errors: err
                 });
             }
 
             res.status(200).json({
                 ok: true,
-                facnotacreditotura: notacreditoBorrar
+                notadebito: notadebitoBorrar
             });
         });
     });
-});
+};
 
 
 //Exportacion de Ruta
-module.exports = app;
+module.exports = notasDebitoController;

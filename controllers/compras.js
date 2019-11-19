@@ -1,64 +1,63 @@
-var express = require('express');
-var app = express();
+var comprasController = {}
 
 
-//======================================================================
-//Lista todos los Productos
-//======================================================================
-app.get('/', (req, res) => {
+//=======================================================================
+//Obtiene todas las Cuidades
+//=======================================================================
+comprasController.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM establecimiento', (err, producto) => {
+        conn.query('SELECT * FROM compras', (err, compras) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de producto',
+                    mensaje: 'Error al cargar lista de compras',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                producto: producto
+                compras: compras
             });
         });
     });
-});
+};
 
 
 //=======================================================================
-//Crear producto
+//Crear Cuidades
 //=======================================================================
-app.post('/', (req, res) => {
+comprasController.create = (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        //bcrypt.hashSync(data.password, 10)
-        conn.query('INSERT INTO establecimiento set ?', [data], (err, productoGuardado) => {
+        conn.query('INSERT INTO compras set ?', [data], (err, comprasGuardado) => {
+
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear producto',
-                    errors: err
+                    mensaje: 'Error al crear compras',
+                    errors: err,
                 });
             }
             res.status(201).json({
                 ok: true,
-                productos: productoGuardado
+                compras: comprasGuardado,
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Actualizar usuario
+//Actualizacion Cuidades por id
 //=======================================================================
-app.put('/:id', (req, res) => {
+comprasController.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE establecimiento set ? WHERE id = ?', [data, id], (err, productoActualizar) => {
+        conn.query('UPDATE compras set ? WHERE idCompras = ?', [data, id], (err, comprasActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar producto',
+                    mensaje: 'error al actualizar',
                     errors: err
 
                 });
@@ -66,38 +65,36 @@ app.put('/:id', (req, res) => {
 
             res.status(200).json({
                 ok: true,
-                producto: productoActualizar
+                compras: comprasActualizar
             });
         });
     });
-});
+}
 
 //=======================================================================
-//Eliminar usuario por id
+//Eliminacion Cuidades por id 
 //=======================================================================
-app.delete('/:id', (req, res) => {
-
+comprasController.delete = (req, res) => {
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM establecimiento WHERE id = ?', [id], (err, productoBorrar) => {
+        conn.query('DELETE FROM compras WHERE idCompras = ?', [id], (err, comprasBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar producto',
+                    mensaje: 'Error al buscar el id',
                     errors: err
                 });
             }
 
             res.status(200).json({
                 ok: true,
-                usuario: productoBorrar
+                compras: comprasBorrar
             });
         });
     });
+};
 
-
-});
-
-//Exportacion de Ruta
-
-module.exports = app;
+//=======================================================================
+//Exporta el modulo 
+//=======================================================================
+module.exports = comprasController;

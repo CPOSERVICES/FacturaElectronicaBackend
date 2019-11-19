@@ -1,97 +1,92 @@
-var express = require('express');
-var app = express();
-
+var provinciasController = {}
 
 //======================================================================
-//Lista todos los Clientes
+//Lista todos los Provincias
 //======================================================================
-app.get('/', (req, res) => {
+provinciasController.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM campoadicional', (err, campoadicional) => {
+        conn.query('SELECT * FROM provincias', (err, provincias) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de campoadicional',
+                    mensaje: 'Error al cargar lista de provincias',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                campoadicional: campoadicional
+                provincias: provincias
             });
         });
     });
-});
-
+};
 
 //=======================================================================
-//Crear producto
+//Crear Provincias
 //=======================================================================
-app.post('/', (req, res) => {
+provinciasController.create = (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('INSERT INTO campoadicional set ?', [data], (err, campoadicionalGuardado) => {
+        conn.query('INSERT INTO provincias set ?', [data], (err, provinciasGuardado) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear campoadicional',
+                    mensaje: 'Error al crear provincias',
                     errors: err
                 });
             }
             res.status(201).json({
                 ok: true,
-                campoadicional: campoadicionalGuardado
+                provincias: provinciasGuardado
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Actualizar campoadicional
+//Actualizar provincias por id
 //=======================================================================
-app.put('/:id', (req, res) => {
+provinciasController.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE campoadicional set ? WHERE id = ?', [data, id], (err, campoadicionalActualizar) => {
+        conn.query('UPDATE provincias set ? WHERE idprovincias = ?', [data, id], (err, provinciasActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar campoadicional',
+                    mensaje: 'Error al buscar provincias',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                campoadicional: campoadicionalActualizar
+                provincias: provinciasActualizar
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Eliminar campoadicional por id
+//Eliminar provincias por id
 //=======================================================================
-app.delete('/:id', (req, res) => {
+provinciasController.delete = (req, res) => {
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM campoadicional WHERE id = ?', [id], (err, campoadicionalBorrar) => {
+        conn.query('DELETE FROM provincias WHERE idprovincias = ?', [id], (err, provinciasBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar campoadicional',
+                    mensaje: 'Error al eliminar provincias',
                     errors: err
                 });
             }
-
             res.status(200).json({
                 ok: true,
-                campoadicional: campoadicionalBorrar
+                provincias: provinciasBorrar
             });
         });
     });
-});
-
+};
 
 //Exportacion de Ruta
-module.exports = app;
+module.exports = provinciasController;

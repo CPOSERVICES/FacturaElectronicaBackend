@@ -1,97 +1,100 @@
-var express = require('express');
-var app = express();
+var cotizacionesController = {}
 
 
-//======================================================================
-//Lista todos los retencion
-//======================================================================
-app.get('/', (req, res) => {
+//=======================================================================
+//Obtiene todas las Cuidades
+//=======================================================================
+cotizacionesController.list = (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('SELECT * FROM retencion', (err, retencion) => {
+        conn.query('SELECT * FROM cotizaciones', (err, cotizaciones) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al cargar lista de retencion',
+                    mensaje: 'Error al cargar lista de cotizaciones',
                     errors: err
                 });
             }
             res.status(200).json({
                 ok: true,
-                retencion: retencion
+                cotizaciones: cotizaciones
             });
         });
     });
-});
+};
 
 
 //=======================================================================
-//Crear retencion
+//Crear Cotizaciones
 //=======================================================================
-app.post('/', (req, res) => {
+cotizacionesController.create = (req, res) => {
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('INSERT INTO retencion set ?', [data], (err, retencionGuardado) => {
+        conn.query('INSERT INTO cotizaciones set ?', [data], (err, cotizacionesGuardado) => {
+
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    mensaje: 'Error al crear retencion',
-                    errors: err
+                    mensaje: 'Error al crear cotizacion',
+                    errors: err,
                 });
             }
             res.status(201).json({
                 ok: true,
-                retencion: retencionGuardado
+                cotizaciones: cotizacionesGuardado,
             });
         });
     });
-});
+};
 
 //=======================================================================
-//Actualizar retencion
+//Actualizacion Cuidades por id
 //=======================================================================
-app.put('/:id', (req, res) => {
+cotizacionesController.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
     req.getConnection((err, conn) => {
-        conn.query('UPDATE retencion set ? WHERE id = ?', [data, id], (err, retencionActualizar) => {
+        conn.query('UPDATE cotizaciones set ? WHERE idCotizacion = ?', [data, id], (err, cotizacionesActualizar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al buscar retencion',
+                    mensaje: 'error al actualizar',
                     errors: err
+
                 });
             }
+
             res.status(200).json({
                 ok: true,
-                retencion: retencionActualizar
+                cotizaciones: cotizacionesActualizar
             });
         });
     });
-});
+}
 
 //=======================================================================
-//Eliminar retencion por id
+//Eliminacion Cuidades por id 
 //=======================================================================
-app.delete('/:id', (req, res) => {
+cotizacionesController.delete = (req, res) => {
     const id = req.params.id;
     req.getConnection((err, conn) => {
-        conn.query('DELETE FROM retencion WHERE id = ?', [id], (err, retencionBorrar) => {
+        conn.query('DELETE FROM cotizaciones WHERE idCotizacion = ?', [id], (err, cotizacionesBorrar) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
-                    mensaje: 'Error al eliminar retencion',
+                    mensaje: 'Error al buscar el id',
                     errors: err
                 });
             }
 
             res.status(200).json({
                 ok: true,
-                retencion: retencionBorrar
+                cotizaciones: cotizacionesBorrar
             });
         });
     });
-});
+}
 
-
-//Exportacion de Ruta
-module.exports = app;
+//=======================================================================
+//Exporta el modulo 
+//=======================================================================
+module.exports = cotizacionesController;
