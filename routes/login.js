@@ -9,7 +9,7 @@ var SEED = require('../config/configToken').SEED;
 //Login de usuarios
 //=======================================================================
 app.post('/', (req, res) => {
-    var user = req.body.username;
+    var user = req.body.email;
     var pass = req.body.password;
     var pass1 = bcryp.hashSync(pass, 0)
     console.log('asdas', pass1);
@@ -24,24 +24,24 @@ app.post('/', (req, res) => {
         }
 
         if (user && pass) {
-            conn.query('SELECT * FROM user WHERE username = ? AND password = ?', [user, pass], function(error, results, fields) {
-                if (results.length > 0) {
+            conn.query('SELECT * FROM user WHERE email = ? AND password = ?', [user, pass], function(error, usuario, fields) {
+                if (usuario.length > 0) {
                     req.session.loggedin = true;
                     req.session.user = user;
                     pass = req.session.pass;
                     //Token
                     // console.log( pass: bcryp.hashSync(pass, 10));
-                    var token = jwt.sign({ results }, SEED, { expiresIn: 14400 });
+                    var token = jwt.sign({ usuario }, SEED, { expiresIn: 14400 });
 
                     res.status(200).json({
                         ok: true,
                         pass: pass1,
-                        results: results,
+                        usuario: usuario,
                         token: token,
                         mensaje: 'Login logrado exitosamente...!'
 
                     });
-                    console.log('resultsadsd', results.password);
+                    //console.log('resultsadsd', results.password);
                 } else {
                     res.status(400).json({
                         ok: false,
